@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student E-Piggy Bank</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            background-color: #C8A2C8; /* Lilac color */
+        }
+        .container { 
+            max-width: 400px; 
+            margin: auto; 
+            padding: 20px; 
+            border: 1px solid #ccc; 
+            border-radius: 10px; 
+            background: #fff; /* Card stays white for contrast */
+        }
+        label, input { display: block; width: 100%; margin-bottom: 10px; }
+        button { margin-top: 10px; }
+        #bankSection { display: none; }
+        .form-section { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Account Creation -->
+        <div id="accountSection">
+            <h2>Create Your Piggy Bank Account</h2>
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName" name="studentName" required>
+            <button type="button" onclick="createAccount()">Create Account</button>
+        </div>
+        
+        <!-- Banking Section (hidden initially) -->
+        <div id="bankSection">
+            <h2>Welcome, <span id="nameDisplay"></span>!</h2>
+            <p>Your Account ID: <strong id="accountIdDisplay"></strong></p>
+            
+            <!-- Deposit Section -->
+            <div class="form-section">
+                <h4>Deposit Money</h4>
+                <label for="depositAmount">Amount to Deposit:</label>
+                <input type="number" id="depositAmount" min="1" required>
+                <button type="button" onclick="deposit()">Deposit</button>
+            </div>
+            
+            <!-- Withdraw Section -->
+            <div class="form-section">
+                <h4>Withdraw Money</h4>
+                <label for="withdrawAmount">Amount to Withdraw:</label>
+                <input type="number" id="withdrawAmount" min="1" required>
+                <button type="button" onclick="withdraw()">Withdraw</button>
+            </div>
+            
+            <h3 id="balanceDisplay">Balance: ₹0</h3>
+        </div>
+    </div>
+    <script>
+        let balance = 0;
+        let accountCreated = false;
+        let accountId = "SPB001";
+        let studentName = "";
+
+        function updateDisplay() {
+            document.getElementById('balanceDisplay').innerText = "Balance: ₹" + balance;
+        }
+        function createAccount() {
+            studentName = document.getElementById('studentName').value.trim();
+            if(studentName.length === 0) {
+                alert("Please enter your name to create an account.");
+                return;
+            }
+            // Simulate account creation
+            accountCreated = true;
+            document.getElementById('accountSection').style.display = 'none';
+            document.getElementById('bankSection').style.display = 'block';
+            document.getElementById('nameDisplay').innerText = studentName;
+            document.getElementById('accountIdDisplay').innerText = accountId;
+        }
+        function deposit() {
+            let amt = parseInt(document.getElementById('depositAmount').value);
+            if (amt && amt > 0) {
+                balance += amt;
+                updateDisplay();
+                alert("Deposited ₹"+amt+" successfully!");
+                document.getElementById('depositAmount').value = '';
+            }
+        }
+        function withdraw() {
+            let amt = parseInt(document.getElementById('withdrawAmount').value);
+            if (amt && amt > 0) {
+                if (amt > balance) {
+                    alert("Insufficient funds!");
+                } else {
+                    balance -= amt;
+                    updateDisplay();
+                    alert("Withdrew ₹"+amt+" successfully!");
+                }
+                document.getElementById('withdrawAmount').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
